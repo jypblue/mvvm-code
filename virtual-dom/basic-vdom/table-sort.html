@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>simple virtual dom</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      thead { color: green;}
+      tbody { color: blue;}
+      table, th, td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script src="./js/utils.js"></script>
+    <script src="./js/element.js"></script>
+    <script src="./js/patch.js"></script>
+    <script src="./js/list-diff.js"></script>
+    <script src="./js/diff.js"></script>
+    <script>
+
+      (function(){
+        var el = Element;
+        diff = diff;
+        patch = patch;
+
+        var AGE = 'age';
+        var REPUTATION = 'reputation';
+
+        var sortKey = AGE;
+        var sortType = 1;
+
+        // 数据
+        var list = [
+          {username: 'Jerry', age: 12, reputation: 200, uid: 'user1'},
+          {username: 'Pony', age: 33, reputation: 3000, uid: 'user4'},
+          {username: 'Lucy', age: 21, reputation: 99, uid: 'user2'},
+          {username: 'Tomy', age: 20, reputation:20, uid: 'user3'},
+          {username: 'Funky', age: 49, reputation: 521, uid: 'user5'}
+        ];
+
+        // 构建虚拟dom
+        function renderTree() {
+          var rows = renderRows();
+           return el('div', [
+              el('b', ['sortKey: ' + sortKey, ' | sortType: ' + (sortType ? 'up' : 'down')]),
+              el('table', [
+                el('thead', [
+                  el('tr', [
+                    el('th', ['UID']),
+                    el('th', ['NAME']),
+                    el('th', {'id': 'sort-head1', sortKey: 'age'}, ['AGE']),
+                    el('th', {'id': 'sort-head2', sortKey: 'reputation'}, ['REPUTATION'])
+                  ])
+                ]),
+                el('tbody', rows)
+              ])
+            ])
+        }
+
+         function renderRows() {
+            var rows = []
+            for (var i = 0, len = list.length; i < len; i++) {
+              var item = list[i]
+              rows.push(
+                el('tr', {key: item.uid}, [
+                  el('td', [item.uid]),
+                  el('td', [item.username]),
+                  el('td', [item.age]),
+                  el('td', [item.reputation]),
+                ])
+              )
+            }
+            return rows
+          }
+
+        var tree = renderTree();
+        var dom = tree.render();
+        document.body.appendChild(dom);
+
+        // 绑定事件
+        var sortTriggers = [
+        document.getElementById('sort-head1'),
+        document.getElementById('sort-head2')
+        ]
+
+        for(var i = 0, len = sortTriggers.length; i < len; i++) {
+          var trigger = sortTriggers[i];
+
+          (function(_trigger){
+            _trigger.onclick = function() {
+              var key = _trigger.getAttribute('sortKey');
+              if(key === sortKey) {
+                sortType = !sortType;
+              } else {
+                sortKey = key;
+                sortType = 1;
+              }
+
+              // 改变数据
+              sortData();
+              // 构建新的虚拟dom
+              var newTree = renderTree();
+              // diff比较差别
+              var patches = diff(tree, newTree);
+              // 重绘真实dom
+              patch(dom, patches);
+              // 更新新的虚拟dom
+              tree = newTree;
+            }
+          })(trigger)
+
+        }
+
+        function sortData() {
+          list.sort(function(a, b) {
+            if(sortType) {
+              return a[sortKey] - b[sortKey];
+            } else {
+              return b[sortKey] - a[sortKey];
+            }
+          })
+        }
+
+
+
+      }());
+
+
+    </script>
+  </body>
+</html>

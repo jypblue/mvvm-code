@@ -1,0 +1,18 @@
+{
+  "name": "virtual-dom-mvvm",
+  "version": "1.0.0",
+  "description": "vdom and mvvm code practice",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vdom",
+    "mvvm"
+  ],
+  "author": "zx.wang",
+  "license": "MIT"
+}
