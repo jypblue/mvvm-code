@@ -63,3 +63,27 @@ _.setAttr = function setAttr(node, key, value) {
     break;
   }
 }
+
+_.extend = function(dest, src) {
+ for( var key in src) {
+   if(src.hasOwnProperty(key)) {
+     dest[key] = src[key];
+   }
+ }
+ return dest;
+}
+
+var nextTick = window.requestAnimationFrame ||
+window.webkitRequestAnimationFrame ||
+window.mozRequestAnimationFrame ||
+window.oRequestAnimationFrame ||
+window.msRequestAnimationFrame;
+
+
+_.nextTick = function(func) {
+  if(nextTick) {
+    return nextTick.apply(window, arguments);
+  } else {
+    return setTimeout(func)
+  }
+}

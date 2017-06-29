@@ -94,7 +94,7 @@ function reorderChildren(node, moves) {
     if(move.type === 0) {
       // 可能是为了插入而移除的
       if(staticNodeList[index] === node.childNodes[index]) {
-        // 本来就相等为什么还要条件判断？没懂
+        // 本来就相等为什么还要条件判断？因为childNodes是动态变化的，删除或者增加都会变化，所以要判断是否跟最开始的值是否相等
         node.removeChild(node.childNodes[index]);
       }
 

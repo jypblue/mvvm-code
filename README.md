@@ -6,7 +6,8 @@
 ```
 1. 发布订阅模式
 2. MVVM
-3. virtual-dom
+3. virtual-dom/basic-vdom
+4. small-template
 ```
 
 
