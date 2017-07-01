@@ -2,10 +2,7 @@
 //var Parser = require('./parser')
 //var svd = require('simple-virtual-dom')
 //var _ = require('./util')
-var svd = {};
-svd.diff =diff;
-svd.patch = patch;
-svd.el =Element;
+
 var vTemplate = {}
 
 vTemplate.compile = function (template) {
@@ -17,8 +14,9 @@ vTemplate.compile = function (template) {
       params.push('  var ' + key + ' = ' + '_data_.' + key + ';\n')
     }
     var body = params.join('') + code.body
+
     var renderFunc = new Function('_data_', '_el_', body)
-    // console.log(renderFunc.toString())
+     console.log(renderFunc.toString())
     var el = getElementByRenderFunc(renderFunc, data)
     // return a object with set data API
     return new VTemplate(el, data, renderFunc)

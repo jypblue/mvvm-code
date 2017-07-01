@@ -1,6 +1,6 @@
 var types = {
   TK_TEXT: 1,
-  TK_IF:2,
+  TK_IF: 2,
   TK_END_IF: 3,
   TK_ELSE_IF: 4,
   TK_ELSE: 5,

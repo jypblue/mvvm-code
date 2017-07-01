@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <script>
+      var tpl = 'Hei, my name is <%name%>, and I\'m <%age%> years old.';
+      var data = {
+        name: 'jypblue',
+        age: '25'
+      }
+
+      var result = tpl.replace(/<%([^%>]+)?%>/g, function(s0, s1){
+        return data[s1];
+      });
+      console.log(result);
+
+      var reg = /<%([^%>]+)?%>/g;
+      //var match = reg.exec(tpl);
+      while(match = reg.exec(tpl)) {
+         console.log(match);
+      }
+
+      // var tplEngine = function(tpl, data) {
+      //   var reg = /<%([^%>]+)?%>/g,
+      //   code = 'var r = [];\n',
+      //   regOut = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
+      //   trimReg = /(^\s+)|(\s+$)/g,
+      //   cursor = 0; // 定位代码最后一截
+      //   var add =function(line, js) {
+      //     js ?
+      //     (code +=
+      //     line.match(regOut) ? line + '\n' : 'r.push(' + line.replace(trimReg,'')+');\n')
+      //     :
+      //     code += 'r.push("'+ line.replace(/"/g, '\\"') +'");\n';
+      //     return add;
+      //   };
+
+      //   while(match = reg.exec(tpl)) {
+      //     add(tpl.slice(cursor, match.index))(match[1], true); // push进去非逻辑部分字符串
+      //     //add(match[1], true); // push进去逻辑部分字符串 match[0] = "<%" + match[1] + "%>";
+      //     cursor = match.index + match[0].length;
+      //     console.log(match);
+      //   }
+
+      //   add(tpl.substr(cursor, tpl.length - cursor)); // 传入代码最后一截
+
+      //   code += 'retrun r.join("");'; // 返回拼装好后的字符串代码
+      //   console.log(code.replace(/[\r\t\n]/g, ''));
+      //   //console.log(new Function(code.replace(/[\r\t\n]/g, '')).apply(data))
+      //   return new Function(code.replace(/[\r\t\n]/g, '')).apply(posts);
+      // }
+
+      var tplEngine = function(tpl, data) {
+          var reg = /<%([^%>]+)?%>/g,
+              regOut = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
+              code = 'var r=[];\n',
+              trimReg = /(^\s+)|(\s+$)/g,
+              cursor = 0;
+          var add = function(line, js) {
+              js? (code += line.match(regOut) ? line + '\n' : 'r.push(' + line.replace(trimReg,'') + ');\n') :
+                  (code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
+              return add;
+          }
+          while(match = reg.exec(tpl)) {
+              add(tpl.slice(cursor, match.index))(match[1], true);
+              cursor = match.index + match[0].length;
+          }
+          add(tpl.substr(cursor, tpl.length - cursor));
+          code += 'return r.join("");';
+          return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+      };
+
+      var tpl2 = '<% for(var i = 0; i < this.posts.length; i++) {' +　
+        'var post = this.posts[i]; %>' +
+        '<% if(!post.expert){ %>' +
+            '<span>post is null</span>' +
+        '<% } else { %>' +
+            '<a href="#"><% post.expert %> at <% post.time %></a>' +
+        '<% } %>' +
+    '<% } %>';
+    var data2 = {
+        "posts": [{
+            "expert": "content 1",
+            "time": "yesterday"
+        },{
+            "expert": "content 2",
+            "time": "today"
+        },{
+            "expert": "content 3",
+            "time": "tomorrow"
+        },{
+            "expert": "",
+            "time": "eee"
+        }]
+    };
+    var html = tplEngine(tpl2, data2);
+    document.body.innerHTML = html;
+    console.log(html);
+
+
+
+    </script>
+  </body>
+</html>

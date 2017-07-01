@@ -11,9 +11,9 @@
 </body>
     <script src="../virtual-dom/basic-vdom/js/utils.js"></script>
     <script src="../virtual-dom/basic-vdom/js/element.js"></script>
-    <!--<script src="../virtual-dom/basic-vdom/js/patch.js"></script>
+    <script src="../virtual-dom/basic-vdom/js/patch.js"></script>
     <script src="../virtual-dom/basic-vdom/js/list-diff.js"></script>
-    <script src="../virtual-dom/basic-vdom/js/diff.js"></script>-->
+    <script src="../virtual-dom/basic-vdom/js/diff.js"></script>
 
  <script src="./src/tokentypes.js"></script>
     <script src="./src/tokenizer.js"></script>
@@ -56,16 +56,16 @@
   document.body.appendChild(jerry.dom)
   document.body.appendChild(lucy.dom)
 
-  // setTimeout(function () {
-  //   jerry.setData({
-  //     firstName: 'Tomy',
-  //     tags: ['C++', 'Python']
-  //   })
-  //   lucy.setData({
-  //     lastName: 'Blue',
-  //     tags: ['JavaScript', 'virtual-template', 'Web']
-  //   })
-  // }, 1000)
+  setTimeout(function () {
+    jerry.setData({
+      firstName: 'Tomy',
+      tags: ['C++', 'Python']
+    })
+    lucy.setData({
+      lastName: 'Blue',
+      tags: ['JavaScript', 'virtual-template', 'Web']
+    })
+  }, 1000)
 </script>
 
 </html>
