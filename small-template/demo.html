@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+  <script>
+    var reg = /\{\s*?[\S\s]*?\}/g;
+    var reg2 = /^{\s*?}$/;
+    var test = '{0}';
+    var params = ['orderId','id','oid'];
+    var cursor = 0;
+    var match = null;
+    var name = '';
+    var arr =[];
+    console.log(test.match(reg));
+
+    while(match = reg.exec(test)) {
+      var num = match[0].replace(/\D+/g, '')
+      console.log(match);
+      name += test.slice(cursor, match.index)+ params[num];
+      //arr.push(match[0].replace(/\D+/g, ''))
+     // cursor = match.index + match[0].length;
+      console.log(name);
+    }
+
+
+
+      console.log(name);
+
+  </script>
+  </body>
+</html>
